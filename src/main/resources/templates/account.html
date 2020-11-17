@@ -1,0 +1,46 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+<h3>
+    <div style="color: red" th:text="${'Hello '+ user.getUsername()+'!'}"></div>
+</h3>
+
+
+<form th:action="@{/account/account}" th:object="${post}" th:method="post">
+    <input type="text" th:field="*{textPostAddDTO}" placeholder="Post text">
+    <p>
+        <button type="submit">Add post</button>
+    </p>
+</form>
+
+
+<div th:each="item:${posts}">
+    <small th:text="${item.getTimestamp()}"/>
+    <p th:text="${item.getText()}"/>
+    <a th:href="@{/deletePost/deletePost/{id}(id=${item.getId()})}">Delete post</a>
+    <a th:href="@{/updatePost/updatePost/{id}(id=${item.getId()})}">Update post</a>
+    <div th:each="var:${item.getComments()}">
+        <small th:text="${var.getTimestamp()}"/>
+        <p small th:text="${var.getUserWhoAddCommentName()}"/>
+        <p style="color: mediumblue" th:text="${var.getText()}"/>
+    </div>
+</div>
+
+
+<div th:object="${allUsers}">
+    <div th:each="item:${allUsers}">
+        <a th:href="@{/person/person/{id}(id=${item.getId()})}" th:text="${item.getUsername()}"/>
+    </div>
+</div>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Sign Out</button>
+</form>
+
+
+</body>
+</html>

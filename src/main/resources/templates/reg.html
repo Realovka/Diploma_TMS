@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Registration</title>
+</head>
+<body>
+<form th:action="@{/home/reg}" th:object="${userReg}" method="post">
+    <p><input type="text" th:field="*{nameRegDTO}" placeholder="Login"/></p>
+    <p th:if="${#fields.hasErrors('nameRegDTO')}" th:errors="*{nameRegDTO}">You need to enter more characters</p>
+    <p><input type="password" th:field="*{passwordRegDTO}" placeholder="Password"/></p>
+    <p th:if="${#fields.hasErrors('passwordRegDTO')}" th:errors="*{passwordRegDTO}">You need to enter more characters</p>
+    <p><input type="text" th:field="*{emailRegDTO}" placeholder="e-mail"/></p>
+    <p th:if="${#fields.hasErrors('emailRegDTO')}" th:errors="*{emailRegDTO}">You need to enter more characters</p>
+    <p><input type="text" th:field="*{phoneRegDTO}" placeholder="Phone"/></p>
+    <p th:if="${#fields.hasErrors('phoneRegDTO')}" th:errors="*{phoneRegDTO}">You need to enter more characters</p>
+    <p><input type="radio" name="roleRegDTO" th:value="USER">USER</p>
+    <p><input type="radio" name="roleRegDTO" th:value="ADMIN">ADMIN</p>
+    <button type="submit">Registration</button>
+</form>
+</body>
+</html>
