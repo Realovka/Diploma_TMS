@@ -1,12 +1,10 @@
 package by.realovka.diploma.controller;
 
 import by.realovka.diploma.dto.PostAddDTO;
-import by.realovka.diploma.entity.Comment;
-import by.realovka.diploma.entity.Post;
+import by.realovka.diploma.dto.PostOnPageDTO;
 import by.realovka.diploma.entity.User;
-import by.realovka.diploma.service.CommentService;
+import by.realovka.diploma.service.FriendshipService;
 import by.realovka.diploma.service.PostService;
-import by.realovka.diploma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -26,14 +24,15 @@ public class AccountController {
     private PostService postService;
 
     @Autowired
-    private UserService userService;
-
+    private FriendshipService friendshipService;
 
     @GetMapping(path = "/account")
     public ModelAndView getHomePageForUser(@AuthenticationPrincipal User user, ModelAndView modelAndView){
-        List<User> allUsers = userService.getAllUsersWithoutAuthUser(user);
-        List<Post> posts = postService.findAllPosts(user);
-        modelAndView.addObject("allUsers", allUsers);
+        List<PostOnPageDTO> posts = postService.getPosts(user);
+        List<User> friends = friendshipService.getAllFriendsAuthUser(user);
+        List<User> usersWhoMayBeFriends = friendshipService.getUsersWhoMayBeFriends(user);
+        modelAndView.addObject("usersWhoMayBeFriends", usersWhoMayBeFriends);
+        modelAndView.addObject("friends", friends);
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("user", user);
         modelAndView.addObject("post", new PostAddDTO());
@@ -43,10 +42,12 @@ public class AccountController {
 
     @PostMapping(path = "/account")
     public ModelAndView addPost(@AuthenticationPrincipal User user, @ModelAttribute("post") PostAddDTO postAddDTO, ModelAndView modelAndView){
-        List<User> allUsers = userService.getAllUsersWithoutAuthUser(user);
+        List<User> usersWhoMayBeFriends = friendshipService.getUsersWhoMayBeFriends(user);
+        List<User> friends = friendshipService.getAllFriendsAuthUser(user);
         postService.addPost(user,postAddDTO);
-        List<Post> posts = postService.findAllPosts(user);
-        modelAndView.addObject("allUsers", allUsers);
+        List<PostOnPageDTO> posts = postService.getPosts(user);
+        modelAndView.addObject("usersWhoMayBeFriends", usersWhoMayBeFriends);
+        modelAndView.addObject("friends", friends);
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("user", user);
         modelAndView.addObject("post", new PostAddDTO());

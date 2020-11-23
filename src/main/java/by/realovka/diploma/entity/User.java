@@ -1,6 +1,5 @@
 package by.realovka.diploma.entity;
 
-import by.realovka.diploma.dto.UserRegDTO;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
@@ -8,7 +7,6 @@ import org.hibernate.annotations.LazyCollection;
 import org.hibernate.annotations.LazyCollectionOption;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
-
 
 import javax.persistence.*;
 import java.util.*;
@@ -25,24 +23,18 @@ public class User implements UserDetails {
     private String password;
     private String email;
     private String phone;
+    private boolean deleted;
     @Enumerated(EnumType.STRING)
     @ElementCollection(targetClass = Role.class, fetch = FetchType.EAGER)
     @CollectionTable(name = "roles")
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name="user_id", referencedColumnName = "roles")
     private Set<Role> roles = new HashSet<>();
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<Post> posts = new ArrayList<>();
-    @ManyToMany(cascade = CascadeType.ALL)
-    @LazyCollection(LazyCollectionOption.FALSE)
-    @JoinColumn(name = "user_name", referencedColumnName = "friends_name") //TODO
-    private List<User> friends = new ArrayList<>();
-//    @OneToMany(cascade = CascadeType.ALL)
-//    @LazyCollection(LazyCollectionOption.FALSE)
-//    @JoinColumn(name = "user_id",referencedColumnName = "id")
-//    private List<Comment> comments = new ArrayList<>();
+
 
 
     @Override

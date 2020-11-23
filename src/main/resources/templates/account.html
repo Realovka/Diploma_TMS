@@ -19,23 +19,37 @@
 
 
 <div th:each="item:${posts}">
-    <small th:text="${item.getTimestamp()}"/>
+    <small th:text="${item.getDataTime()}"/>
     <p th:text="${item.getText()}"/>
     <a th:href="@{/deletePost/deletePost/{id}(id=${item.getId()})}">Delete post</a>
     <a th:href="@{/updatePost/updatePost/{id}(id=${item.getId()})}">Update post</a>
     <div th:each="var:${item.getComments()}">
-        <small th:text="${var.getTimestamp()}"/>
-        <p small th:text="${var.getUserWhoAddCommentName()}"/>
+        <small th:text="${var.getLocalDateTime()}"/>
+        <p small th:text="${var.getUser().getUsername()}"/>
         <p style="color: mediumblue" th:text="${var.getText()}"/>
     </div>
 </div>
 
-
-<div th:object="${allUsers}">
-    <div th:each="item:${allUsers}">
+<div style="color: mediumspringgreen"> You friends </div>
+<div th:object="${friends}">
+    <div th:each="item:${friends}">
         <a th:href="@{/person/person/{id}(id=${item.getId()})}" th:text="${item.getUsername()}"/>
     </div>
 </div>
+
+
+
+<div style="color: lightseagreen" >Do you want to add this users to friends?</div>
+<div th:object="${usersWhoMayBeFriends}">
+    <div th:each="item:${usersWhoMayBeFriends}">
+        <a th:href="@{/person/person/{id}(id=${item.getId()})}" th:text="${item.getUsername()}"/>
+    </div>
+</div>
+
+
+
+
+<a th:href="@{/deleteUser/deleteUser}">Delete my page</a>
 
 <form th:action="@{/logout}" method="post">
     <button type="submit">Sign Out</button>

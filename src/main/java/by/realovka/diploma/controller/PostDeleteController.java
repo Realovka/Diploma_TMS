@@ -1,10 +1,10 @@
 package by.realovka.diploma.controller;
 
 import by.realovka.diploma.dto.PostAddDTO;
-import by.realovka.diploma.entity.Post;
+import by.realovka.diploma.dto.PostOnPageDTO;
 import by.realovka.diploma.entity.User;
+import by.realovka.diploma.service.FriendshipService;
 import by.realovka.diploma.service.PostService;
-import by.realovka.diploma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import java.util.List;
 @RequestMapping(path = "/deletePost")
 public class PostDeleteController {
     @Autowired
-    private UserService userService;
+    private FriendshipService friendshipService;
 
     @Autowired
     private PostService postService;
@@ -27,9 +27,11 @@ public class PostDeleteController {
     @GetMapping(path = "/deletePost/{id}")
     public ModelAndView deletePost(@AuthenticationPrincipal User user,@PathVariable long id, ModelAndView modelAndView){
         postService.deletePost(id);
-        List<User> allUsers = userService.getAllUsersWithoutAuthUser(user);
-        List<Post> posts = postService.findAllPosts(user);
-        modelAndView.addObject("allUsers", allUsers);
+        List<User> friends = friendshipService.getAllFriendsAuthUser(user);
+        List<User> usersWhoMayBeFriends = friendshipService.getUsersWhoMayBeFriends(user);
+        List<PostOnPageDTO> posts = postService.getPosts(user);
+        modelAndView.addObject("friends", friends);
+        modelAndView.addObject("usersWhoMayBeFriends", usersWhoMayBeFriends);
         modelAndView.addObject("posts", posts);
         modelAndView.addObject("user", user);
         modelAndView.addObject("post", new PostAddDTO());

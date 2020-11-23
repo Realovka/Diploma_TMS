@@ -1,20 +1,19 @@
 package by.realovka.diploma.controller;
 
 import by.realovka.diploma.dto.UserRegDTO;
-import by.realovka.diploma.entity.User;
 import by.realovka.diploma.repository.UserRepository;
 import by.realovka.diploma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Controller;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.servlet.ModelAndView;
 
-import java.util.Collections;
+import javax.validation.Valid;
 
 @Controller
 @RequestMapping(path = "/home")
@@ -34,9 +33,13 @@ public class RegistrationAndAuthorizationController {
     }
 
     @PostMapping(path = "/reg")
-        public ModelAndView postRegistrationUser(@ModelAttribute("userReg") UserRegDTO userRegDTO, ModelAndView modelAndView ){
-        userService.registrationUser(userRegDTO);
-        modelAndView.setViewName("hello");
+        public ModelAndView postRegistrationUser(@ModelAttribute("userReg")@Valid UserRegDTO userRegDTO, BindingResult bindingResult, ModelAndView modelAndView ){
+        if(bindingResult.hasErrors()){
+            modelAndView.setViewName("reg");
+        } else {
+            userService.registrationUser(userRegDTO);
+            modelAndView.setViewName("hello");
+        }
         return  modelAndView;
 
     }

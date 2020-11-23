@@ -1,4 +1,4 @@
-package by.realovka.diploma.service.exseption;
+package by.realovka.diploma.service.exсeption;
 
 public class SuchUserIsPresentAlreadyException extends RuntimeException{
     public SuchUserIsPresentAlreadyException() {

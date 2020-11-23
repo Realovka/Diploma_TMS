@@ -2,10 +2,11 @@ package by.realovka.diploma.controller;
 
 import by.realovka.diploma.dto.CommentAddDTO;
 import by.realovka.diploma.dto.PostOnPageDTO;
+import by.realovka.diploma.entity.Post;
 import by.realovka.diploma.entity.User;
 import by.realovka.diploma.service.FriendshipService;
+import by.realovka.diploma.service.LikeService;
 import by.realovka.diploma.service.PostService;
-import by.realovka.diploma.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.stereotype.Controller;
@@ -17,31 +18,28 @@ import org.springframework.web.servlet.ModelAndView;
 import java.util.List;
 
 @Controller
-@RequestMapping(path = "/friend")
-public class FriendController {
-
+@RequestMapping(path = "/addLike")
+public class LikeOnPersonPageAddController {
+    @Autowired
+    private LikeService likeService;
     @Autowired
     private FriendshipService friendshipService;
     @Autowired
-    private UserService userService;
-    @Autowired
     private PostService postService;
 
-    @GetMapping(path = "/friend/{id}")
-    public ModelAndView additionToFriend(@PathVariable long id, @AuthenticationPrincipal User user, ModelAndView modelAndView){
-        User person = userService.getUserById(id);
-        friendshipService.saveFriendship(user,person);
+    @GetMapping(path = "/addLike/{id}")
+    public ModelAndView getAddLike(@PathVariable("id") long id, @AuthenticationPrincipal User user, ModelAndView modelAndView){
+        Post post =  postService.getPostById(id);
+        User person = post.getUser();
+        likeService.addLike(post, user);
         List<User> friends = friendshipService.getAllFriendsPerson(person, user);
-        if (friendshipService.getAnswerAreUserAndPersonFriends(user,person)) {
-            modelAndView.addObject("messageAboutFriend", "It's your friend");
-        }
         List<PostOnPageDTO> posts = postService.getPosts(person);
         modelAndView.addObject("comment", new CommentAddDTO());
         modelAndView.addObject("person", person);
+        modelAndView.addObject("friends", friends);
         modelAndView.addObject("authUser", user);
         modelAndView.addObject("posts", posts);
-        modelAndView.addObject("friends", friends);
-        modelAndView.setViewName(String.format("redirect:/person/person/%s",person.getId()));
+        modelAndView.setViewName(String.format("redirect:/person/person/%s", person.getId()));
         return modelAndView;
     }
 }

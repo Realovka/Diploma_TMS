@@ -5,19 +5,28 @@
     <title>Person page</title>
 </head>
 <body>
+
+
+
 <h3>
     <div style="color: darkred" th:text="${person.getUsername()}"></div>
 </h3>
 
 <div th:text="${messageAboutFriend}"></div>
 <div th:if="${messageAboutFriend==null}">
+
     <a th:href="@{/friend/friend/{id}(id=${person.getId()})}">Add to friend</a>
+
 </div>
 
 
 <div th:each="item:${posts}">
-    <small th:text="${item.getTimestamp()}"/>
+    <a th:href="@{/addLike/addLike/{id}(id=${item.getId()})}">Add like to post</a>
+    <p th:text="${item.getLikes().size()}"/>
+    <small th:text="${item.getDataTime()}"/>
     <p th:text="${item.getText()}"/>
+
+
 
     <form th:action="@{/person/person/{id}(id=${person.getId()})}" th:object="${comment}" th:method="post">
         <input type="text" th:field="*{textCommentAddDTO}" placeholder="Comment"/>
@@ -27,14 +36,26 @@
     </form>
 
     <div th:each="var:${item.getComments()}">
-        <small th:text="${var.getTimestamp()}"/>
-        <p small th:text="${var.getUserWhoAddCommentName()}"/>
+        <small th:text="${var.getLocalDateTime()}"/>
+        <p small th:text="${var.getUser().getUsername()}"/>
         <p style="color: mediumblue" th:text="${var.getText()}"/>
-        <div th:if="${var.getUserWhoAddCommentName().equals(authUser.getUsername())}">
+        <div th:if="${var.getUser().getUsername().equals(authUser.getUsername())}">
+            <a th:href="@{/updateComment/updateComment/{id}(id=${var.getId()})}">Update comment</a>
+        </div>
+        <div th:if="${var.getUser().getUsername().equals(authUser.getUsername())}">
             <a th:href="@{/deleteCommentOnPersonPage/deleteCommentOnPersonPage/{id}(id=${var.getId()})}">Delete comment</a>
         </div>
     </div>
 </div>
+
+
+<div style="color: mediumspringgreen"> User's friends </div>
+<div th:object="${friends}">
+    <div th:each="item:${friends}">
+        <a th:href="@{/person/person/{id}(id=${item.getId()})}" th:text="${item.getUsername()}"/>
+    </div>
+</div>
+
 
 <a th:href="@{/account/account}">Home page</a>
 </body>
