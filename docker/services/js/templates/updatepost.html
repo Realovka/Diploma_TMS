@@ -1,0 +1,14 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Update Post</title>
+</head>
+<body>
+<h3>Update your post</h3>
+<form th:action="@{/updatePost/updatePost/{id}(id=${postOnPage.getId()})}" th:object="${updatePost}" method="post">
+    <input type="text" th:field="*{textPostUpdateDTO}" placeholder="Update post"/>
+    <button type="submit">Update post</button>
+</form>
+</body>
+</html>

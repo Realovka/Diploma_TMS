@@ -27,12 +27,9 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public void addComment(long postId, User user, CommentAddDTO commentAddDTO) {
-        Optional<Post> post = postRepository.findById(postId);
-        Post postCommentAdd = new Post();
-        if(post.isPresent()){
-            postCommentAdd = post.get();
-        } else new NoSuchPostException();
-        Comment comment = new Comment(commentAddDTO.getTextCommentAddDTO(), LocalDateTime.now(), postCommentAdd, user);
+        Post postDB = postRepository.findById(postId)
+                      .orElseThrow(NoSuchPostException::new);
+        Comment comment = new Comment(commentAddDTO.getTextCommentAddDTO(), LocalDateTime.now(), postDB, user);
         commentRepository.save(comment);
 
     }
@@ -43,16 +40,16 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public Comment getComment(long commentId) {
-        if (commentRepository.findById(commentId).isPresent()) {
-            return commentRepository.findById(commentId).get();
+    public Comment getComment(long id) {
+        if (commentRepository.findById(id).isPresent()) {
+            return commentRepository.findById(id).get();
         } else throw new NoSuchCommentException();
     }
 
 
     @Override
-    public void updateComment(long commentId, CommentUpdateDTO commentUpdateDTO) {
-        Optional<Comment> updateComment = commentRepository.findById(commentId);
+    public void updateComment(long id, CommentUpdateDTO commentUpdateDTO) {
+        Optional<Comment> updateComment = commentRepository.findById(id);
         if (updateComment.isPresent()) {
             Comment comment = updateComment.get();
             comment.setText(commentUpdateDTO.getTextCommentUpdateDTO());
@@ -60,4 +57,8 @@ public class CommentServiceImpl implements CommentService {
         }
     }
 
+    @Override
+    public void deleteCommentsByPostId(long id){
+        commentRepository.deleteByPostId(id);
+    }
 }

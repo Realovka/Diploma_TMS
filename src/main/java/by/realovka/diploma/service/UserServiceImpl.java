@@ -4,6 +4,7 @@ import by.realovka.diploma.dto.UserRegDTO;
 import by.realovka.diploma.entity.User;
 import by.realovka.diploma.repository.UserRepository;
 import by.realovka.diploma.service.exсeption.SuchUserIsPresentAlreadyException;
+import by.realovka.diploma.service.exсeption.UserIsDeletedException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
@@ -25,6 +26,9 @@ public class UserServiceImpl implements UserDetailsService, UserService {
 
     @Override
     public UserDetails loadUserByUsername(String name) throws UsernameNotFoundException {
+        if (userRepository.findByUsername(name).isDeleted()){
+            throw new UserIsDeletedException();
+        }
         return userRepository.findByUsername(name);
     }
 
@@ -50,11 +54,15 @@ public class UserServiceImpl implements UserDetailsService, UserService {
         return userRepository.findById(id);
     }
 
-
     @Override
-    public void deleteUser(User user) {
-        userRepository.delete(user);
+    public void setUserDeleted(User user){
+        user.setDeleted(true);
+        userRepository.save(user);
     }
 
+    @Override
+    public void setUserNotDeleted(String username){
+        userRepository.findByUsername(username).setDeleted(false);
+    }
 
 }

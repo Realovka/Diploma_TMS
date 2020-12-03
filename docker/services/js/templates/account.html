@@ -1,0 +1,60 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="https://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Home page</title>
+</head>
+<body>
+<h3>
+    <div style="color: red" th:text="${'Hello '+ user.getUsername()+'!'}"></div>
+</h3>
+
+
+<form th:action="@{/account/account}" th:object="${post}" th:method="post">
+    <input type="text" th:field="*{textPostAddDTO}" placeholder="Post text">
+    <p>
+        <button type="submit">Add post</button>
+    </p>
+</form>
+
+
+<div th:each="item:${posts}">
+    <small th:text="${item.getDataTime()}"/>
+    <p th:text="${item.getText()}"/>
+    <a th:href="@{/account/deletePost/{id}(id=${item.getId()})}">Delete post</a>
+    <a th:href="@{/account/updatePost/{id}(id=${item.getId()})}">Update post</a>
+    <div th:each="var:${item.getComments()}">
+        <small th:text="${var.getDataTime()}"/>
+        <p small th:text="${var.getUser().getUsername()}"/>
+        <p style="color: mediumblue" th:text="${var.getText()}"/>
+    </div>
+</div>
+
+<div style="color: mediumspringgreen"> You friends </div>
+<div th:object="${friends}">
+    <div th:each="item:${friends}">
+        <a th:href="@{/person/person/{id}(id=${item.getId()})}" th:text="${item.getUsername()}"/>
+    </div>
+</div>
+
+
+
+<div style="color: lightseagreen" >Do you want to add this users to friends?</div>
+<div th:object="${usersWhoMayBeFriends}">
+    <div th:each="item:${usersWhoMayBeFriends}">
+        <a th:href="@{/person/person/{id}(id=${item.getId()})}" th:text="${item.getUsername()}"/>
+    </div>
+</div>
+
+
+
+
+<a th:href="@{/deleteUser/deleteUser}">Delete my page</a>
+
+<form th:action="@{/logout}" method="post">
+    <button type="submit">Sign Out</button>
+</form>
+
+
+</body>
+</html>

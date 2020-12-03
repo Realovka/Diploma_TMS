@@ -16,14 +16,14 @@ import java.util.List;
 @Entity
 @Cacheable(false)
 @Table(name = "POSTS")
-public class Post {
+public class Post implements Comparable<Post> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
     private String text;
     private LocalDateTime localDateTime;
     private long view;
-    @OneToMany(cascade = CascadeType.ALL)
+    @OneToMany
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "post_id",referencedColumnName = "id")
     private List<Comment> comments = new ArrayList<>();
@@ -31,7 +31,7 @@ public class Post {
     @LazyCollection(LazyCollectionOption.FALSE)
     @JoinColumn(name = "post_id",referencedColumnName = "id")
     private List<Like> likes = new ArrayList<>();
-    @JoinColumn(name = "post_id", referencedColumnName = "id")
+    @JoinColumn(name = "user_id", referencedColumnName = "id")
     @OneToOne(targetEntity = User.class)
     private User user;
 
@@ -41,4 +41,8 @@ public class Post {
         this.user = user;
     }
 
+    @Override
+    public int compareTo(Post o) {
+        return o.getLocalDateTime().compareTo(getLocalDateTime());
+    }
 }

@@ -19,7 +19,7 @@ public class UserDeleteController {
 
     @GetMapping(path = "/deleteUser")
     public ModelAndView userDelete(@AuthenticationPrincipal User user, HttpSession httpSession,ModelAndView modelAndView){
-        userService.deleteUser(user);
+        userService.setUserDeleted(user);
         httpSession.invalidate();
         modelAndView.setViewName("hello");
         return modelAndView;

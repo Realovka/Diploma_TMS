@@ -7,6 +7,6 @@ public interface UserService {
 
     User getUserById(long id);
     void registrationUser(UserRegDTO userRegDTO);
-    void deleteUser(User user);
-//    User getByUserName(String name);
+    void setUserDeleted(User user);
+    void setUserNotDeleted(String username);
 }

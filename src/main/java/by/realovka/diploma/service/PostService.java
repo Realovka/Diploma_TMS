@@ -11,11 +11,11 @@ import java.util.List;
 
 public interface PostService {
     void addPost(User user, PostAddDTO postAddDTO);
-    List<Post> findAllPosts(User user);
     void deletePost(long id);
     void updatePost(long id, PostUpdateDTO postUpdateDTO);
     Post getPostByComment(Comment comment);
     Post getPostById(long id);
-    List<PostOnPageDTO> getPosts(User user);
-    Post findPost(long id);
+    List<PostOnPageDTO> getPosts(long userId);
+    List<Post> findAllPosts(long userId);
+    long addViewToPost(long postId);
 }

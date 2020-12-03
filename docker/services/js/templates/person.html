@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Person page</title>
+</head>
+<body>
+
+
+
+<h3>
+    <div style="color: darkred" th:text="${person.getUsername()}"></div>
+</h3>
+
+<div th:text="${messageAboutFriend}"></div>
+<div th:if="${messageAboutFriend==null}">
+
+    <a th:href="@{/friend/friend/{personId}(personId=${person.getId()})}">Add to friend</a>
+
+</div>
+
+
+<div th:each="item:${posts}">
+    <a th:href="@{/person/addLike/{id}(id=${item.getId()})}">Add like to post</a>
+    <p th:text="${item.getLikes().size()}"/>
+    <p th:text="${'Views: ' +item.getView()}"/>
+    <small th:text="${item.getDataTime()}"/>
+    <p th:text="${item.getText()}"/>
+
+
+
+    <form th:action="@{/person/person/{personId}(personId=${person.getId()})}" th:object="${comment}" th:method="post">
+        <input type="hidden" name="postId" th:value="${item.getId()}"/>
+        <input type="text" th:field="*{textCommentAddDTO}" placeholder="Comment"/>
+        <button type="submit">Add comment</button>
+    </form>
+
+    <div th:each="var:${item.getComments()}">
+        <small th:text="${var.getDataTime()}"/>
+        <p small th:text="${var.getUser().getUsername()}"/>
+        <p style="color: mediumblue" th:text="${var.getText()}"/>
+        <div th:if="${var.getUser().getUsername().equals(authUser.getUsername())}">
+            <a th:href="@{/person/updateComment/{id}(id=${var.getId()})}">Update comment</a>
+        </div>
+        <div th:if="${var.getUser().getUsername().equals(authUser.getUsername())}">
+            <a th:href="@{/person/deleteCommentOnPersonPage/commentId/{commentId}/personId/{personId} (commentId=${var.getId()}, personId=${person.getId()}, postId=${item.getId()})}">Delete comment</a>
+        </div>
+    </div>
+</div>
+
+
+<div style="color: mediumspringgreen"> User's friends </div>
+<div th:object="${friends}">
+    <div th:each="item:${friends}">
+        <a th:href="@{/person/person/{id}(id=${item.getId()})}" th:text="${item.getUsername()}"/>
+    </div>
+</div>
+
+
+<a th:href="@{/account/account}">Home page</a>
+</body>
+</html>

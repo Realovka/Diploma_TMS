@@ -6,8 +6,8 @@ import java.util.List;
 
 public interface FriendshipService {
     void saveFriendship(User user, User person);
-    boolean getAnswerAreUserAndPersonFriends(User user, User person);
-    List<User> getAllFriendsAuthUser(User user);
-    List<User> getAllFriendsPerson(User user, User auth);
-    List<User> getUsersWhoMayBeFriends(User auth);
+    boolean getAnswerAreUserAndPersonFriends(long userId, long personId);
+    List<User> getAllFriendsAuthUser(long userId);
+    List<User> getAllFriendsPerson(long personId, long userId);
+    List<User> getUsersWhoMayBeFriends(long userId);
 }

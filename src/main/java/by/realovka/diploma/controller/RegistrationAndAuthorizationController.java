@@ -1,5 +1,6 @@
 package by.realovka.diploma.controller;
 
+import by.realovka.diploma.dto.UserAuthDTO;
 import by.realovka.diploma.dto.UserRegDTO;
 import by.realovka.diploma.repository.UserRepository;
 import by.realovka.diploma.service.UserService;
@@ -46,6 +47,21 @@ public class RegistrationAndAuthorizationController {
 
     @GetMapping(path = "/auth")
     public ModelAndView getAuthorizationPage(ModelAndView modelAndView){
+        modelAndView.setViewName("auth");
+        return modelAndView;
+    }
+
+
+    @GetMapping(path = "/recover")
+    public ModelAndView recoverPage(ModelAndView modelAndView){
+        modelAndView.addObject("auth", new UserAuthDTO());
+        modelAndView.setViewName("recover");
+        return modelAndView;
+    }
+
+    @PostMapping(path = "/recover" )
+    public ModelAndView recoverUser(@ModelAttribute("auth") UserAuthDTO userAuthDTO, ModelAndView modelAndView){
+        userService.setUserNotDeleted(userAuthDTO.getUsername());
         modelAndView.setViewName("auth");
         return modelAndView;
     }

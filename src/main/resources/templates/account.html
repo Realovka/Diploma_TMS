@@ -21,10 +21,10 @@
 <div th:each="item:${posts}">
     <small th:text="${item.getDataTime()}"/>
     <p th:text="${item.getText()}"/>
-    <a th:href="@{/deletePost/deletePost/{id}(id=${item.getId()})}">Delete post</a>
-    <a th:href="@{/updatePost/updatePost/{id}(id=${item.getId()})}">Update post</a>
+    <a th:href="@{/account/deletePost/{id}(id=${item.getId()})}">Delete post</a>
+    <a th:href="@{/account/updatePost/{id}(id=${item.getId()})}">Update post</a>
     <div th:each="var:${item.getComments()}">
-        <small th:text="${var.getLocalDateTime()}"/>
+        <small th:text="${var.getDataTime()}"/>
         <p small th:text="${var.getUser().getUsername()}"/>
         <p style="color: mediumblue" th:text="${var.getText()}"/>
     </div>

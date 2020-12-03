@@ -3,8 +3,10 @@ package by.realovka.diploma.repository;
 import by.realovka.diploma.entity.Comment;
 import org.springframework.data.jpa.repository.JpaRepository;
 
-public interface CommentRepository extends JpaRepository<Comment, Long> {
+import java.util.List;
 
-    void deleteById(Comment id);
+public interface CommentRepository extends JpaRepository<Comment, Long> {
+    void deleteByPostId(long id);
+    List<Comment> findByPostId(long id);
 
 }

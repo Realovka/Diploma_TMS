@@ -3,8 +3,6 @@ package by.realovka.diploma.entity;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
-import org.hibernate.annotations.LazyCollection;
-import org.hibernate.annotations.LazyCollectionOption;
 
 import javax.persistence.*;
 import java.time.LocalDateTime;
@@ -15,7 +13,7 @@ import java.time.LocalDateTime;
 @Entity
 @Cacheable(false)
 @Table(name = "COMMENTS")
-public class Comment {
+public class Comment implements Comparable<Comment>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
@@ -23,11 +21,9 @@ public class Comment {
     private LocalDateTime localDateTime;
     @JoinColumn(name = "post_id", referencedColumnName = "id")
     @OneToOne(targetEntity = Post.class)
-    @LazyCollection(LazyCollectionOption.TRUE)
     private Post post;
-    @JoinColumn(name="user_name", referencedColumnName = "username")
+    @JoinColumn(name="user_id", referencedColumnName = "id")
     @OneToOne(targetEntity = User.class)
-    @LazyCollection(LazyCollectionOption.TRUE)
     private User user;
 
     public Comment(String text, LocalDateTime localDateTime,Post post, User user) {
@@ -36,4 +32,10 @@ public class Comment {
         this.post = post;
         this.user = user;
     }
+
+    @Override
+    public int compareTo(Comment o) {
+        return o.getLocalDateTime().compareTo(getLocalDateTime());
+    }
+
 }

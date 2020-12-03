@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Recover</title>
+</head>
+<body>
+<form th:action="@{/home/recover}" th:object="${auth}" method="post">
+    !!!
+    <input th:type="text" th:field="*{username}" placeholder="Login">
+    <input th:type="password" th:field="*{password}" placeholder="Password">
+    <button type="submit">Sign In</button>
+</form>
+</body>
+</html>

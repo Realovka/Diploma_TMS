@@ -6,7 +6,7 @@
 </head>
 <body>
 <h3>Update your comment</h3>
-<form th:action="@{/updateComment/updateComment/{id}(id=${comment.getId()})}" th:object="${updateComment}" method="post">
+<form th:action="@{/person/updateComment/{id}(id=${comment.getId()})}" th:object="${updateComment}" method="post">
     <input type="text" th:field="*{textCommentUpdateDTO}" placeholder="Update comment"/>
     <button type="submit">Update comment</button>
 </form>

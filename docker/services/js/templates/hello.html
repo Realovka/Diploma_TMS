@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <title>Hello friend!</title>
+</head>
+<body>
+<a th:href="@{/home/reg}">Registration</a>
+<a th:href="@{/account/account}">Account</a>
+<a th:href="@{/home/recover}">Recovery page</a>
+<form th:if="${user!=null}" th:action="@{/logout}" method="post">
+    <button type="submit">Sign Out</button>
+</form>
+</body>
+</html>

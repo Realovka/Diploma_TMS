@@ -29,10 +29,10 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public boolean getAnswerAreUserAndPersonFriends(User user, User person) {
+    public boolean getAnswerAreUserAndPersonFriends(long userId, long personId) {
         List<Friendship> friendships = friendshipRepository.findAll();
         for (Friendship item : friendships) {
-            if (item.getAuth().getId() == user.getId() && item.getPerson().getId() == person.getId()) {
+            if (item.getAuth().getId() == userId && item.getPerson().getId() == personId) {
                 return true;
             }
         }
@@ -40,11 +40,11 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<User> getAllFriendsAuthUser(User user) {
+    public List<User> getAllFriendsAuthUser(long userId) {
         List<Friendship> friendships = friendshipRepository.findAll();
         List<User> friends = new ArrayList<>();
         for (Friendship item : friendships) {
-            if (item.getAuth().getId() == user.getId()) {
+            if (item.getAuth().getId() == userId) {
                 friends.add(item.getPerson());
             }
         }
@@ -52,25 +52,25 @@ public class FriendshipServiceImpl implements FriendshipService {
     }
 
     @Override
-    public List<User> getAllFriendsPerson(User user, User auth) {
+    public List<User> getAllFriendsPerson(long personId, long userId) {
         List<Friendship> friendships = friendshipRepository.findAll();
         List<User> friends = new ArrayList<>();
         for (Friendship item : friendships) {
-            if (item.getAuth().getId() == user.getId()) {
+            if (item.getAuth().getId() == personId) {
                 friends.add(item.getPerson());
             }
         }
-        friends.removeIf(userFr -> userFr.getUsername().equals(auth.getUsername()));
+        friends.removeIf(userFr -> userFr.getId() == userId);
         return friends;
     }
 
 
     @Override
-    public List<User> getUsersWhoMayBeFriends(User auth) {
+    public List<User> getUsersWhoMayBeFriends(long userId) {
         List<User> allUsers = userRepository.findAll();
-        List<User> friends = getAllFriendsAuthUser(auth);
+        List<User> friends = getAllFriendsAuthUser(userId);
         allUsers.removeAll(friends);
-        allUsers.removeIf(user -> user.getUsername().equals(auth.getUsername()));
+        allUsers.removeIf(user -> user.getId()==userId);
         return allUsers;
 
     }

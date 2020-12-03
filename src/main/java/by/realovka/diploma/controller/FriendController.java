@@ -27,15 +27,15 @@ public class FriendController {
     @Autowired
     private PostService postService;
 
-    @GetMapping(path = "/friend/{id}")
-    public ModelAndView additionToFriend(@PathVariable long id, @AuthenticationPrincipal User user, ModelAndView modelAndView){
-        User person = userService.getUserById(id);
+    @GetMapping(path = "/friend/{personId}")
+    public ModelAndView additionToFriend(@PathVariable long personId, @AuthenticationPrincipal User user, ModelAndView modelAndView){
+        User person = userService.getUserById(personId);
         friendshipService.saveFriendship(user,person);
-        List<User> friends = friendshipService.getAllFriendsPerson(person, user);
-        if (friendshipService.getAnswerAreUserAndPersonFriends(user,person)) {
+        List<User> friends = friendshipService.getAllFriendsPerson(person.getId(), user.getId());
+        if (friendshipService.getAnswerAreUserAndPersonFriends(user.getId(),person.getId())) {
             modelAndView.addObject("messageAboutFriend", "It's your friend");
         }
-        List<PostOnPageDTO> posts = postService.getPosts(person);
+        List<PostOnPageDTO> posts = postService.getPosts(personId);
         modelAndView.addObject("comment", new CommentAddDTO());
         modelAndView.addObject("person", person);
         modelAndView.addObject("authUser", user);
