@@ -22,7 +22,7 @@
 
 <div th:each="item:${posts}">
     <a th:href="@{/person/addLike/{id}(id=${item.getId()})}">Add like to post</a>
-    <p th:text="${item.getLikes().size()}"/>
+    <p th:text="${'Likes: '+item.getLikes().size()}"/>
     <p th:text="${'Views: ' +item.getView()}"/>
     <small th:text="${item.getDataTime()}"/>
     <p th:text="${item.getText()}"/>

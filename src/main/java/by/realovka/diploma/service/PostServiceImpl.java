@@ -29,6 +29,8 @@ public class PostServiceImpl implements PostService {
     private CommentRepository commentRepository;
     @Autowired
     private LikeRepository likeRepository;
+    @Autowired
+    private PostOnPage postOnPage;
 
     @Override
     public void addPost(User user, PostAddDTO postAddDTO) {
