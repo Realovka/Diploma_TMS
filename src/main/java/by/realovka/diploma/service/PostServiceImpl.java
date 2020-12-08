@@ -29,8 +29,7 @@ public class PostServiceImpl implements PostService {
     private CommentRepository commentRepository;
     @Autowired
     private LikeRepository likeRepository;
-    @Autowired
-    private PostOnPage postOnPage;
+
 
     @Override
     public void addPost(User user, PostAddDTO postAddDTO) {
@@ -53,7 +52,7 @@ public class PostServiceImpl implements PostService {
 
 
     @Override
-    public List<PostOnPageDTO> getPosts(long userId){ //TODO
+    public List<PostOnPageDTO> getPosts(long userId){
         List<Post> posts = findAllPosts(userId);
         Collections.sort(posts);
         List<PostOnPageDTO> postsOnPage = new ArrayList<>();
