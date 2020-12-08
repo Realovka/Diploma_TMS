@@ -14,11 +14,11 @@ import java.util.List;
 @Service
 @Transactional
 public class FriendshipServiceImpl implements FriendshipService {
-
     @Autowired
     private FriendshipRepository friendshipRepository;
     @Autowired
     private UserRepository userRepository;
+
 
     @Override
     public void saveFriendship(User user, User person) {

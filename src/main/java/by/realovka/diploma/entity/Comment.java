@@ -11,12 +11,12 @@ import java.time.LocalDateTime;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Cacheable(false)
 @Table(name = "COMMENTS")
 public class Comment implements Comparable<Comment>{
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Lob
     private String text;
     private LocalDateTime localDateTime;
     @JoinColumn(name = "post_id", referencedColumnName = "id")

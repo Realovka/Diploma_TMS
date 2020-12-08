@@ -35,7 +35,11 @@ public class User implements UserDetails {
     @JoinColumn(name = "user_id", referencedColumnName = "id")
     private List<Post> posts = new ArrayList<>();
 
-
+    public User(long id, String username, String password) {
+        this.id = id;
+        this.username = username;
+        this.password = password;
+    }
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {

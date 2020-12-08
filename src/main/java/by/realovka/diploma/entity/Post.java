@@ -14,12 +14,12 @@ import java.util.List;
 @Data
 @AllArgsConstructor @NoArgsConstructor
 @Entity
-@Cacheable(false)
 @Table(name = "POSTS")
 public class Post implements Comparable<Post> {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private long id;
+    @Lob
     private String text;
     private LocalDateTime localDateTime;
     private long view;
