@@ -1,5 +1,35 @@
-server:
-  port: ${PORT:8081}
-spring:
-  datasource:
-    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost/mydb}
+#server:
+#  port: ${PORT:8081}
+#spring:
+#  datasource:
+#    url: ${SPRING_DATASOURCE_URL:jdbc:postgresql://localhost/mydb}
+
+#version: '3.8'
+#services:
+#
+#  springbootapp:
+#    build:
+#      context: services/springbootapp
+#      dockerfile: Dockerfile.development
+#      environment:
+#        - PORT=8081
+#        - SPRING_DATASOURCE_URL=jdbc:postgresql://test
+#      image: 'diploma'
+#      ports:
+#        - 8081:8081
+#      depends_on:
+#        - postgresql
+#
+#
+#  postgresql:
+#    build:
+#      context: services/postgresql
+#      dockerfile: Dockerfile.development
+#    ports:
+#      - "5433:5432"
+#    environment:
+#      - POSTGRES_USER=postgres
+#      - POSTGRES_DB=test
+#      - POSTGRES_PASSWORD=admin
+#    volumes:
+#      - "db-data:/var/lib/postgresql/data"
